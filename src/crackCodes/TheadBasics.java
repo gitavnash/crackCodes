@@ -16,6 +16,7 @@ public class TheadBasics {
 				while (i < 25) {
 					try {
 						sp.printEven(i);
+						System.out.println("Name " + Thread.currentThread().getName());
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -36,6 +37,7 @@ public class TheadBasics {
 				while (i < 25) {
 					try {
 						sp.printOdd(i + 2);
+						System.out.println("Name " + Thread.currentThread().getName());
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
