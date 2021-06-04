@@ -15,7 +15,7 @@ public class TheadBasics {
 				int i = 1;
 				while (i < 25) {
 					try {
-						sp.printEven(i);
+						sp2.printEven(i);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -39,8 +39,10 @@ public class TheadBasics {
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+					} finally {
+						i = i + 2;
 					}
-					i = i + 2;
+					
 				}
 			}
 
@@ -56,19 +58,37 @@ public class TheadBasics {
 
 }
 
-class sharedprinter {
-	static Semaphore odd = new Semaphore(0);;
-	static Semaphore even = new Semaphore(1);;
-
-	static void printOdd(int n) throws InterruptedException {
-		odd.acquire();
+class sharedprinter2 {
+	boolean flag = false;
+	
+	 void printOdd(int n) throws InterruptedException {
+		while(!flag)
+		{
+			  try {
+	                wait();
+	            } catch (InterruptedException e) {
+	                Thread.currentThread().interrupt();
+	            }
+		}
+		
 		System.out.println(n + " ");
-		even.release();
+		flag = true; 
+		notify();
 	}
 
-	static void printEven(int n) throws InterruptedException {
-		even.acquire();
-		System.out.println(n + " ");
-		odd.release();
+	void printEven(int n) throws InterruptedException {
+		while(flag)
+		{
+			  try {
+	                wait();
+	            } catch (InterruptedException e) {
+	                Thread.currentThread().interrupt();
+	            }
+		}
+		
+			System.out.println(n +" ");
+	        flag = false;
+	        notify();
+		
 	}
 }
